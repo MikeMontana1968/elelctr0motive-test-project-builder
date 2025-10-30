@@ -1,25 +1,8 @@
 # EV Conversion Project Management System
 
 A quick and dirty Python-based system for generating test ev-projects using Supabase as the backend.
-It will create reasonably random projects using fake data and vehicle images from a large dataset of images. You'll need to get a copy of those images/folders from Mike - there's 8500 images, too much for a git repo.
+It will create reasonably random projects with  fake data and vehicle images from a large dataset of images. You'll need to get a copy of those images/folders from Mike - there's 8500 images, too much for a git repo.
 
-You'll need to manually create a .env in  the top folder with the following values populated:
-
-```
-    API_KEY="..."
-    SUPABASE_URL="..."
-    SUPABASE_KEY="..."
-    ELCTROMOTIVE_USER="..."
-    ELCTROMOTIVE_PASSWORD="..."
-    ELECTROMOTIVE_URL='..."
-    ELECTROMOTIVE_LOGIN_URL='..."
-    TODO_CLUSTER_ID =..."
-```
-
-You'll also need to install all the python requirements:
-```
-pip install -r requirements
-```
 
 ## Features
 
@@ -82,30 +65,38 @@ pip install -r requirements.txt
 Create a `.env` file in the root directory:
 
 ```env
-SUPABASE_URL=your_supabase_url
-SUPABASE_KEY=your_supabase_key
-FREEIMAGE_API_KEY=your_freeimage_api_key
+    API_KEY="..."
+    SUPABASE_URL="..."
+    SUPABASE_KEY="..."
+    ELCTROMOTIVE_USER="..."
+    ELCTROMOTIVE_PASSWORD="..."
+    ELECTROMOTIVE_URL='..."
+    ELECTROMOTIVE_LOGIN_URL='..."
+    TODO_CLUSTER_ID ="2233c641-866e-460c-ba16-facce4bbdde4"
 ```
 
 ## Usage
 
+### After unzipping all the images to \vehicle-paths, run these two utils to build a json file of all the images,
+and the 2nd one will upload them to FreeImage (get your own free API key from there).
+
+Note it takes A LONG TIME to upload the images, and FreeImage will rate limit you. When it happens the code gets a 403 error and stops. After a few hours, re-run the upload script, and it will pick up where it left off.
+Right now the uploader script dows some goofy random-skip-through-the-list so that the uploaded images will be spread out across the alphabet of makes/models.
+
+```bash
+cd util
+python build-image-index.py
+python upload-to-freeimage
+```
+
 ### Run the main application
+
+Review the code to see how many counts of each sub items are generated, and you'll discover most of the list-elements come from "lists.json" which you can customize to your liking. 
 
 ```bash
 python main.py
 ```
 
-### Build image index
-
-```bash
-python util/build-image-index.py
-```
-
-### Upload images to Freeimage.host
-
-```bash
-python util/upload-to-freeimage.py
-```
 
 ## Dependencies
 
