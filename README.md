@@ -74,6 +74,11 @@ Create a `.env` file in the root directory:
     ELECTROMOTIVE_LOGIN_URL='..."
     TODO_CLUSTER_ID ="2233c641-866e-460c-ba16-facce4bbdde4"
 ```
+API_KEY is your FreeImage API key (sign up and its free)
+ELCTROMOTIVE_USER is the user to whom the projects will be created-for. Account must previously exist.
+
+The ClusterID used is for "NY/NJ/PA EV Builders". Change to your liking.
+
 
 ## Usage
 
@@ -81,7 +86,7 @@ Create a `.env` file in the root directory:
 and the 2nd one will upload them to FreeImage (get your own free API key from there).
 
 Note it takes A LONG TIME to upload the images, and FreeImage will rate limit you. When it happens the code gets a 403 error and stops. After a few hours, re-run the upload script, and it will pick up where it left off.
-Right now the uploader script dows some goofy random-skip-through-the-list so that the uploaded images will be spread out across the alphabet of makes/models.
+Right now the uploader script does some goofy random-skip-through-the-list so that the uploaded images will be spread out across the alphabet of makes/models.
 
 ```bash
 cd util
@@ -91,7 +96,7 @@ python upload-to-freeimage
 
 ### Run the main application
 
-Review the code to see how many counts of each sub items are generated, and you'll discover most of the list-elements come from "lists.json" which you can customize to your liking. 
+Review the code to see how many counts of each sub items are generated, and you'll discover most of the list-elements come from "./lists.json" which you can customize to your liking. 
 
 ```bash
 python main.py
