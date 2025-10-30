@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(test -d venv)",
+      "Bash(python:*)",
+      "Bash(./venv/Scripts/pip install beautifulsoup4 requests supabase wonderwords faker faker-vehicle python-dotenv)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
