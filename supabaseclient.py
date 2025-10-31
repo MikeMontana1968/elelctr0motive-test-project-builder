@@ -14,22 +14,29 @@ rs = RandomSentence()
 
 class SupabaseClient:
 
-    def configure_project_phases(self, project_id):
+    def configure_project_phases(self, project_id) :
         phases = self.supabase.table("project_phases") \
             .select("*") \
             .eq("project_id", f"{project_id}") \
-            .execute() 
-        for phase in phases.data:
-            dt =  datetime.now() + timedelta(days=random.randint(-30, 30))
+            .execute()
+        
+        base_date =  datetime.now() + timedelta(days=random.randint(-720, -30))
+        for phase in phases.data:        
+            status = random.choice(["completed", "in_progress", "pending"])
             record = {            
                 "phase_id":     phase['id'],
-                "status":       random.choice(["completed", "in_progress", "pending"]),
-                "created_at":   dt.isoformat()
+                "status":       status,
+                "created_at":   base_date.isoformat()
             }
+            if status == "completed":
+                record['completed_at'] = (base_date + timedelta(days=random.randint(5, 365))).isoformat()
+            if status == "in_progress":
+                record['started_at'] = (base_date + timedelta(days=random.randint(1, 365))).isoformat()
+
             print(f"  - Adding project phase: {phase['phase_name']}")
             response = self.supabase.table("project_tasks").update(record).eq("id", phase['id']).execute()
             response.raise_for_status()
-        pass
+        return base_date
 
     def add_project_timeline_entries(self, new_project_name, project_id, count = 15):    
         images = self.data['images']    
@@ -68,7 +75,12 @@ class SupabaseClient:
             self.supabase.table("project_components").insert(record).execute()
         
     def create_project(self, count = 10) -> str:
-        e = json.load(open('car_dataset.json'))
+        x = json.load(open('car_dataset.json'))
+        e = []
+        for item in x :
+            if 'hosted_url' in item and item['hosted_url']:
+                e.append(item)
+
         target_motors = self.data['target_motors']
 
         for _ in range(count):

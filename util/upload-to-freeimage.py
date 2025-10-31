@@ -175,10 +175,7 @@ def upload_car_dataset(dataset_json='car_dataset.json', api_key=None, delay_seco
     # Process each image
     idx: int = 0
     for entry in dataset:
-        idx += 1
-        if random.randint(1, 100) <= 80:
-            print(f"[{idx}/{len(dataset)}] Skipping (random skip): {Path(entry['file_path']).name}")
-            continue
+        idx += 1       
 
         # Skip if already successfully uploaded
         if entry.get('hosted_url') and entry.get('upload_status') == 'success':
@@ -228,43 +225,6 @@ def upload_car_dataset(dataset_json='car_dataset.json', api_key=None, delay_seco
             else:
                 # UPLOAD RETURNED 200 BUT IMAGE IS INACCESSIBLE (RATE LIMITED!)
                 print(f"  ✗ Upload returned 200 but image is INACCESSIBLE: {access_check['error']}")
-                # print(f"  → This indicates rate limiting. Image is permanently broken.")
-                
-                # Try to delete the broken image
-                if result.get('delete_url'):
-                    print(f"  → Attempting to delete broken image...")
-                    delete_image(result['delete_url'])
-                
-                
-                # consecutive_403s += 1
-                
-                # # If we've hit multiple consecutive 403s, we've hit the rate limit
-                # if consecutive_403s >= 2:
-                #     print(f"\n{'='*60}")
-                #     print(f"⚠️  RATE LIMIT DETECTED!")
-                #     print(f"{'='*60}")
-                #     print(f"Uploaded {uploads_this_session} images this session")
-                #     print(f"Pausing for {rate_limit_pause // 60} minutes...")
-                #     print(f"Resume time: {datetime.now()}")
-                #     print(f"{'='*60}\n")
-                    
-                #     # Save current progress
-                #     # save_dataset(dataset, dataset_json)
-                    
-                #     # # Long pause
-                #     # time.sleep(rate_limit_pause)
-                    
-                #     # Reset counters
-                #     uploads_this_session = 0
-                #     consecutive_403s = 0
-                    
-                #     print(f"\nResuming uploads...")
-                # else:
-                #     # Mark for retry
-                #     entry['upload_status'] = 'rate_limited'
-                #     entry['upload_error'] = f'Rate limit detected - upload succeeded but image inaccessible'
-                #     entry['retry_count'] = retry_count + 1
-                #     entry['last_upload_time'] = datetime.now().isoformat()
                     
                 failed += 1
         else:

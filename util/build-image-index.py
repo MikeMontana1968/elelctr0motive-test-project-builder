@@ -61,10 +61,10 @@ def build_car_dataset(root_folder, output_json='car_dataset.json'):
                         'make': make,
                         'model': model,
                         'year': year,
-                        'file_path': full_path
+                        'file_path': file
                     })
-                if i >= 5:
-                    break
+                # if i >= 5:
+                #     break
             
         except Exception as e:
             print(f"Error processing folder '{folder_name}': {e}")
@@ -90,7 +90,7 @@ if __name__ == "__main__":
         print(f"Root folder '{root_folder}' does not exist. Please check the path.")
         exit(1)
 
-    dataset = build_car_dataset(root_folder, os.path.join(root_folder, "../vehicle-images/", "car_dataset.json"))
+    dataset = build_car_dataset(os.path.join(root_folder, "../vehicle-images/"), "../2car_dataset.json")
     
     # Optional: Print first few entries as preview
     print("\nSAMPLE First 3 entries")
